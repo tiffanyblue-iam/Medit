@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medit Product SNS Banners (Tokenized)</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css" />
+    
+    <!-- Figma Design Tokens mapping to Tailwind Config -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        // Figma Color Tokens
+                        'token-primary': '#004FEC',
+                        'token-text-headline': '#111827',
+                        'token-text-body': '#6B7280',
+                        'token-bg-main': '#E5E7EB',
+                        'token-bg-card': '#FFFFFF',
+                        'token-bg-soft': '#F8F9FA',
+                    },
+                    fontFamily: {
+                        // Figma Typography Tokens
+                        'token-sans': ['"Pretendard Variable"', 'Pretendard', 'sans-serif'],
+                    },
+                    borderRadius: {
+                        // Figma Shape Tokens
+                        'token-btn': '8px',
+                        'token-card': '32px',
+                    },
+                    spacing: {
+                        // Figma Spacing Tokens
+                        'token-btn-x': '24px', // 2~3배 of y
+                        'token-btn-y': '10px',
+                        'token-card-p': '48px',
+                    },
+                    boxShadow: {
+                        'token-card': '0 25px 50px -12px rgba(0, 0, 0, 0.15)',
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* CSS Variables for direct CSS usage if needed */
+        :root {
+            --token-primary: #004FEC;
+            --token-text-headline: #111827;
+            --token-text-body: #6B7280;
+        }
+
+        body {
+            font-family: "Pretendard Variable", Pretendard, sans-serif;
+            background-color: #f3f4f6; /* 회색 배경으로 배너들을 돋보이게 */
+        }
+        
+        .highlight-stroke {
+            position: relative;
+            display: inline-block;
+            z-index: 1;
+        }
+        .highlight-stroke::after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 4px;
+            width: 100%;
+            height: 8px;
+            background-color: rgba(0, 79, 236, 0.2);
+            border-radius: 4px;
+            z-index: -1;
+        }
+
+        /* 배너 래퍼를 뷰포트에 맞게 스케일링하기 위한 유틸리티 */
+        .banner-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #fff;
+            background-image: radial-gradient(#e5e7eb 1px, transparent 1px);
+            background-size: 20px 20px;
+            border-radius: 12px;
+            padding: 40px;
+            overflow: hidden;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .banner-wrapper {
+            position: relative;
+            transform-origin: center;
+            background: white;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border: 1px solid #f3f4f6;
+        }
+    </style>
+</head>
+<body class="p-8 lg:p-12 text-token-text-headline">
+
+    <div class="max-w-7xl mx-auto">
+        <header class="mb-16">
+            <h1 class="text-4xl font-extrabold mb-4">Medit SNS Product Banners</h1>
+            <p class="text-token-text-body text-lg mb-8">Design System 기반으로 토큰화된 각 소셜 미디어 플랫폼별 배너 레이아웃입니다. Figma에서 해당 토큰을 활용하여 확장할 수 있습니다.</p>
+            
+            <div class="flex flex-wrap gap-4 mb-8 p-6 bg-white rounded-xl border border-gray-200">
+                <div class="w-full mb-2 text-sm font-bold text-gray-500 uppercase">Applied Tokens</div>
+                <div class="flex items-center gap-2 px-3 py-1 bg-gray-50 rounded-md border"><span class="w-4 h-4 rounded-full bg-token-primary"></span> token-primary</div>
+                <div class="flex items-center gap-2 px-3 py-1 bg-gray-50 rounded-md border"><span class="w-4 h-4 rounded-full bg-token-text-headline"></span> token-text-headline</div>
+                <div class="flex items-center gap-2 px-3 py-1 bg-gray-50 rounded-md border"><span class="w-4 h-4 rounded-full bg-token-text-body"></span> token-text-body</div>
+                <div class="flex items-center gap-2 px-3 py-1 bg-gray-50 rounded-md border"><span class="text-xs font-mono">radius: token-btn (8px)</span></div>
+                <div class="flex items-center gap-2 px-3 py-1 bg-gray-50 rounded-md border"><span class="text-xs font-mono">radius: token-card (32px)</span></div>
+            </div>
+        </header>
+
+        <div class="space-y-24">
+
+            <!-- 1. Instagram Square (1080 x 1080) -->
+            <section>
+                <h2 class="text-2xl font-bold mb-2">1. Instagram Post (1:1)</h2>
+                <p class="text-token-text-body mb-6">해상도: 1080 x 1080 (비율 유지를 위해 축소 렌더링)</p>
+                
+                <div class="banner-container">
+                    <!-- 1080x1080 컨테이너 (스케일링) -->
+                    <div class="banner-wrapper w-[1080px] h-[1080px] scale-[0.4] sm:scale-[0.5] md:scale-[0.6] lg:scale-[0.7] xl:scale-[0.8] rounded-token-card bg-token-bg-soft flex flex-col justify-between p-24">
+                        
+                        <!-- Top Text -->
+                        <div class="flex flex-col items-start z-10">
+                            <span class="text-token-primary font-bold text-2xl tracking-wider mb-6 uppercase">Medit i900</span>
+                            <h1 class="text-[96px] font-extrabold leading-[1.05] tracking-tight mb-8">
+                                Beyond Wireless,<br/>
+                                <span class="highlight-stroke text-token-primary">True Mobility.</span>
+                            </h1>
+                            <p class="text-[32px] text-token-text-body font-normal leading-relaxed max-w-2xl">
+                                Experience the freedom to scan anytime, anywhere, without compromise.
+                            </p>
+                        </div>
+
+                        <!-- Product Image Placeholder -->
+                        <div class="absolute -bottom-20 -right-20 w-[800px] h-[800px] flex items-center justify-center">
+                            <div class="absolute inset-0 bg-blue-100 rounded-full blur-[100px] opacity-70"></div>
+                            <div class="relative w-[600px] h-[200px] bg-white rounded-full shadow-token-card border border-gray-100 flex items-center justify-between p-12 transform -rotate-12">
+                                <div class="w-24 h-12 bg-gray-100 rounded-full"></div>
+                                <div class="flex gap-4">
+                                    <div class="w-10 h-10 bg-token-primary rounded-token-btn opacity-20"></div>
+                                    <div class="w-16 h-16 bg-token-primary rounded-token-btn shadow-md"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bottom Button -->
+                        <div class="relative z-10 mt-auto">
+                            <button class="bg-token-primary text-white font-bold text-2xl px-[48px] py-[24px] rounded-token-btn hover:opacity-90 transition-opacity">
+                                Learn More
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 2. Instagram/FB Story (1080 x 1920) -->
+            <section>
+                <h2 class="text-2xl font-bold mb-2">2. Instagram / Facebook Story (9:16)</h2>
+                <p class="text-token-text-body mb-6">해상도: 1080 x 1920 (비율 유지를 위해 축소 렌더링)</p>
+                
+                <div class="banner-container">
+                    <div class="banner-wrapper w-[1080px] h-[1920px] scale-[0.25] sm:scale-[0.35] md:scale-[0.4] lg:scale-[0.45] xl:scale-[0.5] rounded-token-card bg-white flex flex-col items-center text-center p-24 pt-48">
+                        
+                        <!-- Top Text -->
+                        <div class="flex flex-col items-center z-10 w-full">
+                            <span class="text-token-primary font-bold text-3xl tracking-widest mb-8 uppercase">Medit i900</span>
+                            <h1 class="text-[120px] font-extrabold leading-[1.05] tracking-tight mb-12">
+                                True<br/><span class="highlight-stroke text-token-primary">Mobility.</span>
+                            </h1>
+                            <p class="text-[36px] text-token-text-body font-normal leading-relaxed max-w-3xl">
+                                The world's first iPad-compatible intraoral scanner.
+                            </p>
+                        </div>
+
+                        <!-- Product Image Placeholder (Centered) -->
+                        <div class="relative w-full flex-1 flex items-center justify-center my-12">
+                            <div class="absolute bg-blue-50 w-[800px] h-[800px] rounded-full blur-[80px] opacity-80"></div>
+                            <div class="relative w-[500px] h-[180px] bg-white rounded-full shadow-token-card border border-gray-100 flex items-center justify-between p-10 transform -rotate-45">
+                                <div class="w-20 h-10 bg-gray-100 rounded-full"></div>
+                                <div class="w-12 h-12 bg-token-primary rounded-token-btn shadow-md"></div>
+                            </div>
+                        </div>
+
+                        <!-- Bottom Button (Full width for mobile story) -->
+                        <div class="relative z-10 w-full mt-auto pb-12">
+                            <button class="w-full bg-token-primary text-white font-bold text-[40px] py-[40px] rounded-[24px] hover:opacity-90 transition-opacity shadow-[0_20px_40px_rgba(0,79,236,0.3)]">
+                                Swipe Up to Learn More
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 3. LinkedIn/Facebook Landscape Link (1200 x 628) -->
+            <section>
+                <h2 class="text-2xl font-bold mb-2">3. LinkedIn / Facebook Link Post (1.91:1)</h2>
+                <p class="text-token-text-body mb-6">해상도: 1200 x 628 (비율 유지를 위해 축소 렌더링)</p>
+                
+                <div class="banner-container">
+                    <div class="banner-wrapper w-[1200px] h-[628px] scale-[0.4] sm:scale-[0.5] md:scale-[0.7] lg:scale-[0.8] xl:scale-[0.9] rounded-none bg-token-bg-soft flex flex-row items-center p-20 overflow-hidden">
+                        
+                        <!-- Left Text -->
+                        <div class="flex flex-col items-start z-10 w-1/2 pr-12">
+                            <span class="text-token-primary font-bold text-xl tracking-wider mb-4 uppercase">Medit i900 Mobility</span>
+                            <h1 class="text-[64px] font-extrabold leading-[1.1] tracking-tight mb-6">
+                                Beyond Wireless.
+                            </h1>
+                            <p class="text-[22px] text-token-text-body font-normal leading-relaxed mb-10 max-w-lg">
+                                Experience the freedom to scan anytime, anywhere with iPad compatibility.
+                            </p>
+                            <button class="bg-token-primary text-white font-bold text-xl px-[32px] py-[16px] rounded-token-btn hover:opacity-90 transition-opacity">
+                                Discover More
+                            </button>
+                        </div>
+
+                        <!-- Right Image Placeholder -->
+                        <div class="relative w-1/2 h-full flex items-center justify-end">
+                            <div class="absolute right-0 top-1/2 -translate-y-1/2 bg-blue-100 w-[500px] h-[500px] rounded-full blur-[60px] opacity-70"></div>
+                            <div class="relative w-[450px] h-[150px] bg-white rounded-full shadow-token-card border border-gray-100 flex items-center justify-between p-8 transform -rotate-12 translate-x-12">
+                                <div class="w-16 h-8 bg-gray-100 rounded-full"></div>
+                                <div class="w-12 h-12 bg-token-primary rounded-token-btn shadow-md"></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+            <!-- 4. Twitter / X In-Stream Photo (1600 x 900) -->
+            <section>
+                <h2 class="text-2xl font-bold mb-2">4. Twitter / X In-Stream (16:9)</h2>
+                <p class="text-token-text-body mb-6">해상도: 1600 x 900 (비율 유지를 위해 축소 렌더링)</p>
+                
+                <div class="banner-container">
+                    <div class="banner-wrapper w-[1600px] h-[900px] scale-[0.3] sm:scale-[0.4] md:scale-[0.5] lg:scale-[0.6] xl:scale-[0.7] rounded-token-card bg-[#001D5C] flex flex-row items-center p-[80px] overflow-hidden text-white">
+                        
+                        <!-- Left Text (Dark Mode Inverted) -->
+                        <div class="flex flex-col items-start z-10 w-7/12 pr-16">
+                            <span class="text-[#8AB4F8] font-bold text-2xl tracking-widest mb-6 uppercase">Medit i900 Mobility</span>
+                            <h1 class="text-[96px] font-extrabold leading-[1.1] tracking-tight mb-8">
+                                True Mobility<br/>Unleashed.
+                            </h1>
+                            <p class="text-[32px] text-blue-100 font-light leading-relaxed mb-16 max-w-2xl opacity-90">
+                                The world's first iPad-compatible intraoral scanner is here. Redefine your workflow.
+                            </p>
+                            <!-- Inverted Button -->
+                            <button class="bg-white text-token-primary font-bold text-2xl px-[40px] py-[20px] rounded-token-btn hover:bg-gray-50 transition-colors shadow-lg">
+                                Watch Video
+                            </button>
+                        </div>
+
+                        <!-- Right Image Placeholder -->
+                        <div class="relative w-5/12 h-full flex items-center justify-center">
+                            <div class="absolute bg-token-primary w-[700px] h-[700px] rounded-full blur-[120px] opacity-50"></div>
+                            <div class="relative w-[500px] h-[160px] bg-[#0A2B7A] rounded-full shadow-2xl border border-[#1E40AF] flex items-center justify-between p-10 transform rotate-12">
+                                <div class="w-20 h-8 bg-[#1E40AF] rounded-full"></div>
+                                <div class="flex gap-3">
+                                    <div class="w-6 h-6 bg-[#60A5FA] rounded-md opacity-30"></div>
+                                    <div class="w-12 h-12 bg-[#60A5FA] rounded-token-btn shadow-md"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+</body>
+</html>
