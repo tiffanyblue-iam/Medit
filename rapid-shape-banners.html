@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rapid Shape × Medit Link — Banner Designs</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <style>
+    /* ============================================
+       DESIGN TOKENS
+       ============================================ */
+    :root {
+      /* — Brand Colors — */
+      --medit-blue: #004FEC;
+      --medit-blue-light: #3373F0;
+      --medit-navy: #1A1F36;
+      --rapidshape-red: #E31937;
+      
+      /* — Neutrals — */
+      --white: #FFFFFF;
+      --gray-50: #F8F9FA;
+      --gray-100: #F1F3F5;
+      --gray-200: #E9ECEF;
+      --gray-300: #DEE2E6;
+      --gray-400: #ADB5BD;
+      --gray-500: #868E96;
+      --gray-600: #6C757D;
+      --gray-700: #495057;
+      --gray-800: #343A40;
+      --gray-900: #1A1D23;
+      --black: #111111;
+      
+      /* — Typography — */
+      --font-primary: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      
+      /* — Spacing — */
+      --space-xs: 8px;
+      --space-sm: 16px;
+      --space-md: 24px;
+      --space-lg: 40px;
+      --space-xl: 56px;
+      --space-2xl: 80px;
+      
+      /* — CTA Banner — */
+      --cta-bg: linear-gradient(135deg, #003FCC 0%, #004FEC 50%, #2563EB 100%);
+      --cta-radius: 60px;
+    }
+
+    /* ============================================
+       GLOBAL RESET & PAGE
+       ============================================ */
+    *, *::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: var(--font-primary);
+      background: #E5E5E5;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 60px;
+      padding: 60px 40px;
+      color: var(--black);
+    }
+
+    /* ============================================
+       FORMAT LABEL
+       ============================================ */
+    .format-label {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--gray-500);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-bottom: 16px;
+      text-align: center;
+    }
+
+    .format-label span {
+      color: var(--medit-blue);
+    }
+
+    /* ============================================
+       SHARED CARD STYLES
+       ============================================ */
+    .banner {
+      position: relative;
+      overflow: hidden;
+      font-family: var(--font-primary);
+      background: var(--gray-50);
+    }
+
+    /* — Logo Bar — */
+    .logo-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .logo-rapidshape {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--gray-800);
+      letter-spacing: -0.3px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .logo-rapidshape .rs-icon {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .logo-rapidshape .rs-icon svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .logo-x {
+      font-size: 18px;
+      font-weight: 400;
+      color: var(--gray-400);
+    }
+
+    .logo-medit {
+      font-size: 22px;
+      font-weight: 800;
+      color: var(--medit-navy);
+      letter-spacing: 2px;
+    }
+
+    /* — Medit Badge (top-right) — */
+    .medit-badge {
+      position: absolute;
+      font-size: 20px;
+      font-weight: 800;
+      color: var(--medit-navy);
+      letter-spacing: 2.5px;
+    }
+
+    /* — Headline — */
+    .headline {
+      font-weight: 800;
+      color: var(--black);
+      line-height: 1.12;
+      letter-spacing: -1.5px;
+      text-align: center;
+    }
+
+    .headline .blue {
+      color: var(--medit-blue);
+    }
+
+    /* — Subtitle — */
+    .subtitle {
+      color: var(--gray-600);
+      text-align: center;
+      line-height: 1.55;
+      font-weight: 400;
+    }
+
+    /* — Product Image Area — */
+    .product-zone {
+      position: relative;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    .product-zone .placeholder {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      border: 2px dashed var(--gray-300);
+      border-radius: 20px;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(8px);
+      color: var(--gray-400);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .product-zone .placeholder svg {
+      opacity: 0.35;
+    }
+
+    /* — Background Decoration — */
+    .bg-glow {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(100px);
+      opacity: 0.08;
+      pointer-events: none;
+    }
+
+    /* — CTA Banner — */
+    .cta-banner {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: var(--cta-bg);
+      color: var(--white);
+      font-weight: 600;
+      letter-spacing: -0.2px;
+      position: relative;
+    }
+
+    .cta-banner .cta-bold {
+      font-weight: 800;
+    }
+
+    .cta-banner .bulb-icon {
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* — Star Decoration — */
+    .star-deco {
+      position: absolute;
+      opacity: 0.15;
+    }
+
+    /* — Watermark — */
+    .watermark {
+      position: absolute;
+      font-weight: 800;
+      color: var(--gray-200);
+      letter-spacing: -2px;
+      opacity: 0.35;
+      pointer-events: none;
+      white-space: nowrap;
+    }
+
+
+    /* ============================================
+       1. INSTAGRAM — 1080 × 1350
+       ============================================ */
+    .banner--instagram {
+      width: 1080px;
+      height: 1350px;
+      display: flex;
+      flex-direction: column;
+      padding: 56px 64px 0 64px;
+    }
+
+    .banner--instagram .medit-badge {
+      top: 52px;
+      right: 64px;
+      font-size: 24px;
+    }
+
+    .banner--instagram .logo-bar {
+      margin-top: 4px;
+    }
+
+    .banner--instagram .logo-rapidshape {
+      font-size: 24px;
+    }
+
+    .banner--instagram .logo-rapidshape .rs-icon {
+      width: 32px;
+      height: 32px;
+    }
+
+    .banner--instagram .logo-medit {
+      font-size: 24px;
+    }
+
+    .banner--instagram .headline {
+      font-size: 72px;
+      margin-top: 36px;
+      letter-spacing: -2.5px;
+    }
+
+    .banner--instagram .subtitle {
+      font-size: 26px;
+      margin-top: 24px;
+      line-height: 1.5;
+    }
+
+    .banner--instagram .product-zone {
+      flex: 1;
+      margin-top: 40px;
+      min-height: 0;
+    }
+
+    .banner--instagram .product-zone .placeholder {
+      width: 85%;
+      height: 85%;
+      font-size: 16px;
+    }
+
+    .banner--instagram .bg-glow {
+      width: 500px;
+      height: 500px;
+      background: var(--medit-blue);
+      bottom: 200px;
+      left: -100px;
+    }
+
+    .banner--instagram .bg-glow-2 {
+      width: 400px;
+      height: 400px;
+      background: var(--rapidshape-red);
+      top: 100px;
+      right: -150px;
+      opacity: 0.04;
+    }
+
+    .banner--instagram .cta-banner {
+      margin: 0 -64px;
+      height: 92px;
+      font-size: 22px;
+      border-radius: 0;
+    }
+
+    .banner--instagram .cta-banner .bulb-icon {
+      width: 36px;
+      height: 36px;
+    }
+
+    .banner--instagram .watermark {
+      font-size: 140px;
+      right: -30px;
+      bottom: 200px;
+      transform: rotate(-90deg);
+      transform-origin: right bottom;
+    }
+
+    .banner--instagram .star-deco {
+      bottom: 100px;
+      right: 20px;
+    }
+
+    /* ============================================
+       2. BLOG THUMBNAIL — 1200 × 628
+       ============================================ */
+    .banner--blog {
+      width: 1200px;
+      height: 628px;
+      display: flex;
+      flex-direction: row;
+    }
+
+    .banner--blog .blog-left {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 48px 20px 48px 64px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .banner--blog .blog-right {
+      width: 48%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .banner--blog .medit-badge {
+      top: 36px;
+      right: 48px;
+      font-size: 22px;
+    }
+
+    .banner--blog .logo-bar {
+      justify-content: flex-start;
+    }
+
+    .banner--blog .logo-rapidshape {
+      font-size: 20px;
+    }
+
+    .banner--blog .logo-rapidshape .rs-icon {
+      width: 26px;
+      height: 26px;
+    }
+
+    .banner--blog .logo-medit {
+      font-size: 20px;
+    }
+
+    .banner--blog .headline {
+      font-size: 48px;
+      margin-top: 20px;
+      text-align: left;
+      letter-spacing: -1.8px;
+      line-height: 1.15;
+    }
+
+    .banner--blog .subtitle {
+      font-size: 18px;
+      margin-top: 16px;
+      text-align: left;
+      color: var(--gray-500);
+    }
+
+    .banner--blog .tags {
+      display: flex;
+      gap: 10px;
+      margin-top: 24px;
+      flex-wrap: wrap;
+    }
+
+    .banner--blog .tag {
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 16px;
+      border-radius: 20px;
+      background: var(--white);
+      color: var(--gray-600);
+      border: 1px solid var(--gray-200);
+    }
+
+    .banner--blog .tag--blue {
+      background: rgba(0, 79, 236, 0.08);
+      color: var(--medit-blue);
+      border-color: rgba(0, 79, 236, 0.15);
+    }
+
+    .banner--blog .product-zone {
+      width: 100%;
+      height: 100%;
+    }
+
+    .banner--blog .product-zone .placeholder {
+      width: 80%;
+      height: 70%;
+      font-size: 14px;
+    }
+
+    .banner--blog .bg-glow {
+      width: 350px;
+      height: 350px;
+      background: var(--medit-blue);
+      top: -50px;
+      right: -50px;
+    }
+
+    .banner--blog .blog-bottom-bar {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 6px;
+      background: var(--cta-bg);
+    }
+
+    .banner--blog .watermark {
+      font-size: 100px;
+      right: 30px;
+      bottom: 30px;
+      opacity: 0.2;
+    }
+
+
+    /* ============================================
+       SCALING FOR PREVIEW (optional browser preview)
+       ============================================ */
+    .scale-wrapper {
+      transform-origin: top center;
+    }
+
+    @media (max-width: 1300px) {
+      .scale-wrapper {
+        transform: scale(0.55);
+        margin-bottom: -45%;
+      }
+      .scale-wrapper--blog {
+        margin-bottom: -25%;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =============================================
+       DESIGN 1 : INSTAGRAM 1080 × 1350
+       ============================================= -->
+  <div class="format-label">Instagram Post — <span>1080 × 1350 px</span></div>
+  <div class="scale-wrapper">
+    <div class="banner banner--instagram" id="instagram-banner">
+
+      <!-- Medit Badge (Top Right) -->
+      <div class="medit-badge">MEDIT</div>
+
+      <!-- Background Glows -->
+      <div class="bg-glow"></div>
+      <div class="bg-glow bg-glow-2"></div>
+
+      <!-- Logo Bar -->
+      <div class="logo-bar">
+        <div class="logo-rapidshape">
+          <span class="rs-icon">
+            <!-- Rapid Shape Triangle Icon -->
+            <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M20 4L36 36H4L20 4Z" fill="#E31937"/>
+            </svg>
+          </span>
+          rapidshape
+        </div>
+        <span class="logo-x">×</span>
+        <div class="logo-medit">MEDIT</div>
+      </div>
+
+      <!-- Headline -->
+      <h1 class="headline">
+        Rapid Shape <span class="blue">Integrates</span><br>
+        with <span class="blue">Medit Link</span>
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="subtitle">
+        Easy printing with smart automation:<br>
+        Experience the seamless chairside CAM workflow.
+      </p>
+
+      <!-- Product Image Zone -->
+      <div class="product-zone">
+        <div class="placeholder">
+          <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+            <rect x="3" y="3" width="18" height="18" rx="2"/>
+            <circle cx="8.5" cy="8.5" r="1.5"/>
+            <path d="M21 15l-5-5L5 21"/>
+          </svg>
+          Product Image Area<br>
+          <span style="font-size: 13px; opacity: 0.7;">Rapid Shape ONE + Medit Scanner + Software UI</span>
+        </div>
+      </div>
+
+      <!-- Watermark -->
+      <div class="watermark">Integration</div>
+
+      <!-- CTA Banner -->
+      <div class="cta-banner">
+        <span class="bulb-icon">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="18" cy="18" r="16" fill="rgba(255,255,255,0.15)"/>
+            <path d="M18 8C13.6 8 10 11.6 10 16C10 18.8 11.4 21.2 13.6 22.4V25C13.6 25.6 14 26 14.6 26H21.4C22 26 22.4 25.6 22.4 25V22.4C24.6 21.2 26 18.8 26 16C26 11.6 22.4 8 18 8Z" fill="#FFD43B"/>
+            <rect x="14" y="27" width="8" height="2" rx="1" fill="rgba(255,255,255,0.6)"/>
+          </svg>
+        </span>
+        Find "<span class="cta-bold">Rapid Shape Integration</span>" App in Medit Link App Box
+      </div>
+
+      <!-- Star Decoration -->
+      <svg class="star-deco" width="32" height="32" viewBox="0 0 32 32" fill="var(--medit-blue)">
+        <path d="M16 0L18.5 13.5L32 16L18.5 18.5L16 32L13.5 18.5L0 16L13.5 13.5L16 0Z"/>
+      </svg>
+
+    </div>
+  </div>
+
+
+  <!-- =============================================
+       DESIGN 2 : BLOG THUMBNAIL 1200 × 628
+       ============================================= -->
+  <div class="format-label" style="margin-top: 40px;">Blog Thumbnail — <span>1200 × 628 px</span></div>
+  <div class="scale-wrapper scale-wrapper--blog">
+    <div class="banner banner--blog" id="blog-banner">
+
+      <!-- Medit Badge (Top Right) -->
+      <div class="medit-badge">MEDIT</div>
+
+      <!-- Background Glows -->
+      <div class="bg-glow"></div>
+
+      <!-- LEFT : Text Content -->
+      <div class="blog-left">
+
+        <!-- Logo Bar -->
+        <div class="logo-bar">
+          <div class="logo-rapidshape">
+            <span class="rs-icon">
+              <svg viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M20 4L36 36H4L20 4Z" fill="#E31937"/>
+              </svg>
+            </span>
+            rapidshape
+          </div>
+          <span class="logo-x">×</span>
+          <div class="logo-medit">MEDIT</div>
+        </div>
+
+        <!-- Headline -->
+        <h1 class="headline">
+          Rapid Shape<br>
+          <span class="blue">Integrates</span><br>
+          with <span class="blue">Medit Link</span>
+        </h1>
+
+        <!-- Subtitle -->
+        <p class="subtitle">
+          Seamless chairside CAM workflow<br>
+          with smart automation.
+        </p>
+
+        <!-- Tags -->
+        <div class="tags">
+          <span class="tag tag--blue">Integration</span>
+          <span class="tag">Chairside</span>
+          <span class="tag">3D Printing</span>
+          <span class="tag tag--blue">Medit Link</span>
+        </div>
+
+      </div>
+
+      <!-- RIGHT : Product Image Zone -->
+      <div class="blog-right">
+        <div class="product-zone">
+          <div class="placeholder">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <rect x="3" y="3" width="18" height="18" rx="2"/>
+              <circle cx="8.5" cy="8.5" r="1.5"/>
+              <path d="M21 15l-5-5L5 21"/>
+            </svg>
+            Product Image Area
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Accent Bar -->
+      <div class="blog-bottom-bar"></div>
+
+      <!-- Watermark -->
+      <div class="watermark">Integration</div>
+
+    </div>
+  </div>
+
+</body>
+</html>
