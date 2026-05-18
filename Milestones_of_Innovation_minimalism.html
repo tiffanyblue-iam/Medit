@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medit Innovation Timeline - Toss Style</title>
+    <style>
+        /* 1. 토스 고유의 미니멀 디자인 시스템 정의 */
+        :root {
+            --toss-blue: #0064FF;
+            /* 신뢰감을 주는 토스/메디트 블루 */
+            --text-primary: #191F28;
+            /* 깊은 무채색 타이포그래피 */
+            --text-secondary: #4E5968;
+            /* 부연 설명용 그레이 */
+            --text-tertiary: #8B95A1;
+            /* 연도 및 가이드선 그레이 */
+            --bg-page: #ffffff;
+            --line-color: #F2F4F6;
+            /* 극도로 은은한 가이드선 */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-page);
+            color: var(--text-primary);
+            line-height: 1.6;
+            letter-spacing: -0.02em;
+            word-break: keep-all;
+        }
+
+        /* 헤더 인트로 */
+        .header-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 24px 40px;
+        }
+
+        .header-section h1 {
+            font-size: 2.5rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .header-section p {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+
+        /* ===================================================
+           [기본 레이아웃] 모바일 & 태블릿: 세로형 타임라인 
+        =================================================== */
+        .timeline-wrapper {
+            position: relative;
+            max-width: 768px;
+            margin: 0 auto;
+            padding: 40px 24px;
+        }
+
+        /* 세로축 가이드 라인 */
+        .timeline-wrapper::before {
+            content: '';
+            position: absolute;
+            left: 32px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--line-color);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 48px;
+            margin-bottom: 60px;
+        }
+
+        /* 타임라인 점 (Dot) */
+        .timeline-dot {
+            position: absolute;
+            left: 25px;
+            top: 8px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background-color: var(--toss-blue);
+            border: 3px solid #ffffff;
+            box-shadow: 0 0 0 1px var(--line-color);
+            z-index: 10;
+        }
+
+        /* 콘텐츠 영역 */
+        .timeline-year {
+            font-size: 1.3rem;
+            font-weight: 700;
+            color: var(--toss-blue);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .image-box {
+            width: 100%;
+            aspect-ratio: 16 / 10;
+            background-color: #F9FAFB;
+            border-radius: 16px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-tertiary);
+            font-size: 0.9rem;
+            border: 1px solid var(--line-color);
+            overflow: hidden;
+        }
+
+        .image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.4s ease;
+        }
+
+        .timeline-item:hover .image-box img {
+            transform: scale(1.03);
+        }
+
+        .timeline-title {
+            font-size: 1.3rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .timeline-text {
+            color: var(--text-secondary);
+            font-size: 1rem;
+        }
+
+        /* ===================================================
+           [PC 레이아웃] 해상도 1024px 이상: 가로형 스크롤 전환
+        =================================================== */
+        @media (min-width: 1024px) {
+            .header-section {
+                padding: 120px 40px 20px;
+            }
+
+            /* 가로 스크롤 박스로 대전환 */
+            .timeline-wrapper {
+                max-width: 100%;
+                display: flex;
+                overflow-x: auto;
+                padding: 180px 40px 120px;
+                /* 상단 여백을 넓혀서 연도/선 공간 확보 */
+                scroll-behavior: smooth;
+                /* 스크롤바 커스텀 */
+                scrollbar-width: thin;
+                scrollbar-color: #E5E7EB transparent;
+            }
+
+            /* 가로축 가이드 라인 */
+            .timeline-wrapper::before {
+                left: 0;
+                right: 0;
+                top: 180px;
+                /* 점들의 정중앙을 지나도록 배치 */
+                width: 100%;
+                height: 2px;
+            }
+
+            .timeline-item {
+                flex: 0 0 360px;
+                /* 카드의 고정 너비 */
+                margin-right: 60px;
+                margin-bottom: 0;
+                padding-left: 0;
+                display: flex;
+                flex-direction: column;
+            }
+
+            /* 가로 선 위로 점 올리기 */
+            .timeline-dot {
+                left: 0;
+                top: -7px;
+                /* wrapper의 padding-top(180px) 경계선에 정확히 물리도록 연산 */
+            }
+
+            /* 콘텐츠 재배치 */
+            .timeline-content {
+                display: flex;
+                flex-direction: column;
+            }
+
+            /* 연도는 점 바로 위에 띄움 */
+            .timeline-year {
+                position: absolute;
+                top: -46px;
+                left: 0;
+                font-size: 1.8rem;
+            }
+
+            /* 이미지와 텍스트는 점 아래로 자연스럽게 흐름 */
+            .timeline-inner {
+                margin-top: 32px;
+            }
+
+            /* 크롬/사파리 스크롤바 미세 조정 */
+            .timeline-wrapper::-webkit-scrollbar {
+                height: 6px;
+            }
+
+            .timeline-wrapper::-webkit-scrollbar-thumb {
+                background: #E5E7EB;
+                border-radius: 4px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header-section">
+        <h1>Milestones of Innovation</h1>
+        <p>메디트가 개척해 온 디지털 덴티스트리의 순간들입니다.</p>
+    </header>
+
+    <div class="timeline-wrapper" id="timelineWrapper">
+
+        <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+                <span class="timeline-year">2024</span>
+                <div class="timeline-inner">
+                    <div class="image-box">
+                        <span>[ Medit i900 차세대 스캐너 비주얼 ]</span>
+                    </div>
+                    <h3 class="timeline-title">Medit i900 혁신의 정점</h3>
+                    <p class="timeline-text">인공지능과 혁신적인 광학 기술을 결합하여, 프리미엄 구강 스캐너의 새로운 기준을 제시했습니다.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+                <span class="timeline-year">2021</span>
+                <div class="timeline-inner">
+                    <div class="image-box">
+                        <span>[ Medit i700 Wireless 비주얼 ]</span>
+                    </div>
+                    <h3 class="timeline-title">선을 넘어선 자유, i700w</h3>
+                    <p class="timeline-text">무선 기술을 도입해 진료 환경의 완벽한 자유를 선사하며 글로벌 시장을 다시 한번 선도했습니다.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+                <span class="timeline-year">2018</span>
+                <div class="timeline-inner">
+                    <div class="image-box">
+                        <span>[ Medit i500 게임체인저 ]</span>
+                    </div>
+                    <h3 class="timeline-title">디지털 덴티스트리 대중화</h3>
+                    <p class="timeline-text">치과 선진화의 문턱을 낮춘 i500을 통해 전 세계 치과 의사들이 디지털 워크플로우를 경험하게 도왔습니다.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+                <span class="timeline-year">2015</span>
+                <div class="timeline-inner">
+                    <div class="image-box">
+                        <span>[ 덴탈 CAD/CAM 솔루션 ]</span>
+                    </div>
+                    <h3 class="timeline-title">Identica Blue 기공소 장악</h3>
+                    <p class="timeline-text">블루라이트 스캔 기술을 기공소용 스캐너에 도입해 최고 수준의 정밀도와 해상도를 업계 표준으로 정립했습니다.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-content">
+                <span class="timeline-year">2000</span>
+                <div class="timeline-inner">
+                    <div class="image-box">
+                        <span>[ 메디트 창립 ]</span>
+                    </div>
+                    <h3 class="timeline-title">혁신의 시작 (Founded)</h3>
+                    <p class="timeline-text">3차원 측정 기술력을 바탕으로 메디트가 설립되었습니다. 순수 국내 기술로 글로벌 탑티어 기술을 지향했습니다.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const scrollContainer = document.getElementById('timelineWrapper');
+
+        scrollContainer.addEventListener('wheel', (evt) => {
+            // 화면 너비가 1024px 이상(PC 환경)일 때만 마우스 휠을 가로 스크롤로 전환
+            if (window.innerWidth >= 1024) {
+                evt.preventDefault();
+                scrollContainer.scrollLeft += evt.deltaY;
+            }
+        }, { passive: false });
+    </script>
+</body>
+
+</html>
