@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medit - Milestones of Innovation Prototype</title>
+    <style>
+        /* 1. 디자인 시스템 정의 (메디트 브랜드 컬러 반영) */
+        :root {
+            --medit-blue: #005BEA;
+            --medit-dark: #111827;
+            --medit-gray: #4B5563;
+            --medit-light: #F9FAFB;
+            --line-color: #E5E7EB;
+            --transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            color: var(--medit-dark);
+            background-color: #ffffff;
+            line-height: 1.6;
+            word-break: keep-all;
+        }
+
+        /* 인트로 섹션 */
+        .intro-section {
+            padding: 80px 24px;
+            text-align: center;
+            background: linear-gradient(180deg, var(--medit-light) 0%, #ffffff 100%);
+        }
+
+        .intro-section h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.05em;
+            margin-bottom: 16px;
+            color: var(--medit-dark);
+        }
+
+        .intro-section p {
+            font-size: 1.1rem;
+            color: var(--medit-gray);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* 2. 타임라인 컨테이너 (기본 모바일 레이아웃) */
+        .timeline-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 24px;
+            position: relative;
+        }
+
+        /* 중앙 가이드선 (모바일에서는 좌측 배치) */
+        .timeline-container::before {
+            content: '';
+            position: absolute;
+            left: 35px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background-color: var(--line-color);
+        }
+
+        /* 타임라인 아이템 */
+        .timeline-item {
+            position: relative;
+            margin-bottom: 60px;
+            padding-left: 50px;
+        }
+
+        /* 타임라인 노드(점) */
+        .timeline-dot {
+            position: absolute;
+            left: 24px;
+            top: 8px;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: #ffffff;
+            border: 4px solid var(--medit-blue);
+            z-index: 2;
+            transition: var(--transition);
+        }
+
+        /* 스크롤 시 활성화 효과를 위한 클래스 */
+        .timeline-item.active .timeline-dot {
+            background-color: var(--medit-blue);
+            box-shadow: 0 0 0 8px rgba(0, 91, 234, 0.2);
+        }
+
+        /* 연도 표시 */
+        .timeline-year {
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--medit-blue);
+            line-height: 1;
+            margin-bottom: 12px;
+            display: inline-block;
+        }
+
+        /* 콘텐츠 카드 (스트로만 스타일: 넓은 여백과 큰 비주얼) */
+        .timeline-content {
+            background-color: #ffffff;
+            border-radius: 16px;
+            overflow: hidden;
+            transition: var(--transition);
+        }
+
+        .timeline-tag {
+            display: inline-block;
+            padding: 4px 12px;
+            background-color: var(--medit-light);
+            color: var(--medit-blue);
+            font-size: 0.85rem;
+            font-weight: 600;
+            border-radius: 20px;
+            margin-bottom: 12px;
+        }
+
+        .timeline-title {
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            letter-spacing: -0.03em;
+        }
+
+        .timeline-text {
+            color: var(--medit-gray);
+            font-size: 1rem;
+            margin-bottom: 24px;
+        }
+
+        /* 이미지 컨테이너 (실제 제품 누끼/렌더링 이미지가 들어갈 공간) */
+        .timeline-image-wrapper {
+            width: 100%;
+            border-radius: 12px;
+            overflow: hidden;
+            background-color: var(--medit-light);
+            aspect-ratio: 16 / 10;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--line-color);
+            transition: var(--transition);
+        }
+
+        .timeline-image-wrapper span {
+            color: #9CA3AF;
+            font-size: 0.9rem;
+        }
+
+        .timeline-item:hover .timeline-image-wrapper {
+            transform: scale(1.02);
+            border-color: var(--medit-blue);
+        }
+
+
+        /* 3. 미디어 쿼리: 미디엄 스크린 & PC 레이아웃 (스트로만 스타일 구현) */
+        @media (min-width: 768px) {
+            .intro-section {
+                padding: 120px 24px 80px;
+            }
+
+            .intro-section h1 {
+                font-size: 3.5rem;
+            }
+
+            .timeline-container {
+                padding: 80px 24px;
+            }
+
+            /* 가이드선을 화면 중앙으로 이동 */
+            .timeline-container::before {
+                left: 50%;
+                transform: translateX(-50%);
+            }
+
+            /* 아이템을 좌우로 번갈아 배치 */
+            .timeline-item {
+                display: flex;
+                padding-left: 0;
+                margin-bottom: 120px;
+                width: 100%;
+            }
+
+            /* 노드를 중앙 가이드선 위에 정렬 */
+            .timeline-dot {
+                left: 50%;
+                transform: translateX(-50%);
+                top: 12px;
+            }
+
+            /* 좌/우 공통 콘텐츠 영역 크기 제한 */
+            .timeline-info,
+            .timeline-media {
+                width: 45%;
+            }
+
+            /* 홀수 번째 아이템: 왼쪽에 텍스트, 오른쪽에 이미지 */
+            .timeline-item:nth-child(odd) {
+                justify-content: space-between;
+                text-align: right;
+            }
+
+            .timeline-item:nth-child(odd) .timeline-info {
+                order: 1;
+            }
+
+            .timeline-item:nth-child(odd) .timeline-media {
+                order: 2;
+            }
+
+            /* 짝수 번째 아이템: 오른쪽에 텍스트, 왼쪽에 이미지 */
+            .timeline-item:nth-child(even) {
+                justify-content: space-between;
+                text-align: left;
+            }
+
+            .timeline-item:nth-child(even) .timeline-info {
+                order: 2;
+            }
+
+            .timeline-item:nth-child(even) .timeline-media {
+                order: 1;
+            }
+
+            .timeline-year {
+                font-size: 3rem;
+            }
+
+            .timeline-title {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <section class="intro-section">
+        <h1>Milestones of Innovation</h1>
+        <p>디지털 덴티스트리의 패러다임을 바꾼 메디트의 혁신과 도전의 역사입니다.</p>
+    </section>
+
+    <main class="timeline-container">
+
+        <div class="timeline-item active">
+            <div class="timeline-dot"></div>
+            <div class="timeline-info">
+                <div class="timeline-content">
+                    <span class="timeline-year">2021</span><br>
+                    <span class="timeline-tag">Product Launch</span>
+                    <h2 class="timeline-title">Medit i700 & i700 Wireless</h2>
+                    <p class="timeline-text">초고속, 경량화 스캔 기술을 집약한 i700과 선을 없애 진료 효율성을 극대화한 무선 스캐너를 동시 출시하며 글로벌 시장 지배력을
+                        공고히 했습니다.</p>
+                </div>
+            </div>
+            <div class="timeline-media">
+                <div class="timeline-image-wrapper">
+                    <span>[ i700 / i700w 제품 렌더링 이미지 영역 ]</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-info">
+                <div class="timeline-content">
+                    <span class="timeline-year">2018</span><br>
+                    <span class="timeline-tag">The Turning Point</span>
+                    <h2 class="timeline-title">Medit i500 게임 체인저의 등장</h2>
+                    <p class="timeline-text">치과용 구강 스캐너의 대중화를 이끈 i500을 출시했습니다. 높은 정밀도와 합리적인 가격으로 전 세계 구강 스캐너 시장의 판도를
+                        뒤흔들었습니다.</p>
+                </div>
+            </div>
+            <div class="timeline-media">
+                <div class="timeline-image-wrapper">
+                    <span>[ i500 고해상도 누끼 이미지 영역 ]</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-info">
+                <div class="timeline-content">
+                    <span class="timeline-year">2015</span><br>
+                    <span class="timeline-tag">Ecosystem Expansion</span>
+                    <h2 class="timeline-title">Identica Blue & 덴탈 CAD/CAM</h2>
+                    <p class="timeline-text">블루라이트 스캔 기술을 적용하여 정밀도를 한 차원 높인 기공소용 스캐너 시리즈를 출시하며 디지털 덴탈 랩 시장의 표준을 제시했습니다.
+                    </p>
+                </div>
+            </div>
+            <div class="timeline-media">
+                <div class="timeline-image-wrapper">
+                    <span>[ Identica Blue 기공소용 스캐너 이미지 영역 ]</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="timeline-item">
+            <div class="timeline-dot"></div>
+            <div class="timeline-info">
+                <div class="timeline-content">
+                    <span class="timeline-year">2000</span><br>
+                    <span class="timeline-tag">The Beginning</span>
+                    <h2 class="timeline-title">메디트 창립 (Medit Founded)</h2>
+                    <p class="timeline-text">산업용 3차원 스캐너 기술을 바탕으로 기술의 초석을 다졌습니다. 최고 수준의 하드웨어 및 소프트웨어 자체 개발 능력을 확보한
+                        시기입니다.</p>
+                </div>
+            </div>
+            <div class="timeline-media">
+                <div class="timeline-image-wrapper">
+                    <span>[ 초기 3D 스캐닝 기술 / 연구소 전경 이미지 영역 ]</span>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        const items = document.querySelectorAll('.timeline-item');
+
+        window.addEventListener('scroll', () => {
+            const triggerBottom = window.innerHeight * 0.75;
+
+            items.forEach(item => {
+                const itemTop = item.getBoundingClientRect().top;
+
+                if (itemTop < triggerBottom) {
+                    item.classList.add('active');
+                } else {
+                    item.classList.remove('active');
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>
