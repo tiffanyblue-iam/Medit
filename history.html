@@ -1,496 +1,657 @@
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Medit Innovation Timeline</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
-    <style>
-        /* 1. 글로벌 디자인 가이드 및 초기화 */
-        :root {
-            --main-blue: #005BEA;
-            --text-primary: #1F2937;
-            --text-secondary: #4B5563;
-            --text-tertiary: #9CA3AF;
-            --line-color: #E5E7EB;
-            --bg-light: #F9FAFB;
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Roboto', -apple-system, sans-serif;
-            font-weight: 500;
-            color: var(--text-primary);
-            background-color: #ffffff;
-            line-height: 1.6;
-            letter-spacing: -0.01em;
-        }
-
-        /* 2. 상단 네비게이션 탭 (라인 & 점 Y축 완벽 고정) */
-        .nav-sticky-wrapper {
-            position: sticky;
-            top: 0;
-            background: rgba(255, 255, 255, 0.95);
-            backdrop-filter: blur(8px);
-            border-bottom: 1px solid var(--line-color);
-            z-index: 100;
-        }
-
-        .timeline-nav {
-            max-width: 1200px;
-            margin: 0 auto;
-            position: relative;
-            padding: 30px 40px;
-            /* 내부 간격 최적화 */
-        }
-
-        /* 중심선 구역 - 점의 정확한 세로 중앙(Center)에 물리도록 고정 */
-        .nav-line {
-            position: absolute;
-            left: 40px;
-            right: 40px;
-            bottom: 36px;
-            /* 아래 .tab-dot의 중앙 위치와 정확히 매칭 */
-            height: 2px;
-            background-color: var(--line-color);
-            z-index: 1;
-        }
-
-        .tab-container {
-            position: relative;
-            display: flex;
-            justify-content: space-between;
-            z-index: 2;
-        }
-
-        /* 개별 탭 버튼 인터랙션 디자인 */
-        .tab-item {
-            background: none;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            outline: none;
-            width: 120px;
-            /* 균등 분할 밸런스를 위한 너비 할당 */
-        }
-
-        .tab-year {
-            font-size: 0.95rem;
-            font-weight: 700;
-            color: var(--text-tertiary);
-            margin-bottom: 16px;
-            transition: color 0.3s ease, transform 0.3s ease;
-        }
-
-        /* 컨트롤러 점 (선 위에 정확히 오버랩되도록 연산) */
-        .tab-dot {
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background-color: #ffffff;
-            border: 3px solid var(--text-tertiary);
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-        }
-
-        /* Hover 상태 피드백 */
-        .tab-item:hover .tab-year {
-            color: var(--main-blue);
-        }
-
-        .tab-item:hover .tab-dot {
-            border-color: var(--main-blue);
-            transform: scale(1.15);
-        }
-
-        /* Active 상태 스타일 (PC/모바일 스크롤 및 클릭 시 활성화) */
-        .tab-item.active .tab-year {
-            color: var(--main-blue);
-            font-weight: 700;
-        }
-
-        .tab-item.active .tab-dot {
-            border-color: var(--main-blue);
-            background-color: var(--main-blue);
-            box-shadow: 0 0 0 5px rgba(0, 91, 234, 0.15);
-            transform: scale(1.15);
-        }
-
-
-        /* 3. 본문 연혁 컨텐츠 레이아웃 구역 */
-        .timeline-section {
-            max-width: 1100px;
-            margin: 0 auto;
-            padding: 80px 24px;
-        }
-
-        .timeline-group {
-            margin-bottom: 140px;
-            scroll-margin-top: 180px;
-            /* 스크롤 스냅 위치를 헤더 높이에 맞춰 정밀 세팅 */
-        }
-
-        /* ==========================================
-           [PC 모드] 2단 분할 그리드 시스템 
-        ========================================== */
-        @media (min-width: 768px) {
-            .timeline-group {
-                display: flex;
-                gap: 70px;
-            }
-
-            /* 좌측: 타이틀 및 대표 비주얼 (스크롤 고정) */
-            .left-col {
-                flex: 1;
-                position: sticky;
-                top: 180px;
-                height: fit-content;
-            }
-
-            /* 우측: 연혁 리스트 카드 */
-            .right-col {
-                flex: 1.3;
-            }
-        }
-
-        .group-title {
-            font-size: 2.6rem;
-            font-weight: 700;
-            color: var(--text-primary);
-            margin-bottom: 24px;
-        }
-
-        .main-visual-box {
-            width: 100%;
-            aspect-ratio: 16 / 10;
-            background-color: var(--bg-light);
-            border-radius: 16px;
-            border: 1px solid var(--line-color);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-tertiary);
-            font-size: 0.9rem;
-            overflow: hidden;
-        }
-
-        /* 우측 이벤트 카드 템플릿 */
-        .event-list {
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-
-        .event-card {
-            display: flex;
-            align-items: center;
-            gap: 24px;
-            padding: 24px;
-            border-radius: 16px;
-            background-color: #ffffff;
-            border: 1px solid transparent;
-            transition: all 0.25s ease;
-        }
-
-        .event-card:hover {
-            background-color: var(--bg-light);
-            border-color: var(--line-color);
-        }
-
-        /* 연도별 우측 서브 서브 이미지/썸네일 템플릿 추가 */
-        .event-thumb {
-            width: 74px;
-            height: 74px;
-            border-radius: 12px;
-            background-color: #E5E7EB;
-            flex-shrink: 0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: var(--text-tertiary);
-            font-size: 0.75rem;
-            overflow: hidden;
-            border: 1px solid var(--line-color);
-        }
-
-        .event-details {
-            flex-grow: 1;
-        }
-
-        .event-year {
-            font-size: 1.15rem;
-            font-weight: 700;
-            color: var(--main-blue);
-            margin-bottom: 6px;
-        }
-
-        .event-desc {
-            font-size: 0.95rem;
-            color: var(--text-secondary);
-        }
-
-
-        /* ==========================================
-           [모바일 모드] 수직 타임라인 레이아웃 
-        ========================================== */
-        @media (max-width: 767px) {
-            .timeline-nav {
-                padding: 24px 16px;
-            }
-
-            .nav-line {
-                left: 16px;
-                right: 16px;
-                bottom: 30px;
-            }
-
-            .tab-item {
-                width: auto;
-            }
-
-            .tab-year {
-                font-size: 0.8rem;
-                margin-bottom: 12px;
-            }
-
-            .timeline-section {
-                position: relative;
-                padding-left: 32px;
-                padding-right: 16px;
-            }
-
-            /* 모바일 좌측 축선 */
-            .timeline-section::before {
-                content: '';
-                position: absolute;
-                left: 16px;
-                top: 0;
-                bottom: 0;
-                width: 2px;
-                background-color: var(--line-color);
-            }
-
-            .timeline-group {
-                position: relative;
-                margin-bottom: 80px;
-            }
-
-            /* 모바일 그룹 스타트 닷 */
-            .timeline-group::before {
-                content: '';
-                position: absolute;
-                left: -21px;
-                top: 10px;
-                width: 10px;
-                height: 10px;
-                border-radius: 50%;
-                background-color: var(--main-blue);
-                border: 2px solid #ffffff;
-                z-index: 10;
-            }
-
-            .group-title {
-                font-size: 2rem;
-                margin-bottom: 20px;
-            }
-
-            .main-visual-box {
-                margin-bottom: 24px;
-            }
-
-            .event-card {
-                padding: 16px 0;
-                gap: 16px;
-                border-bottom: 1px solid var(--bg-light);
-            }
-
-            .event-card:hover {
-                background-color: transparent;
-                border-color: transparent;
-            }
-
-            .event-thumb {
-                width: 64px;
-                height: 64px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Medit History — Innovation Timeline</title>
+<meta name="description" content="메디트 25년의 혁신 역사. 2000년 창립부터 디지털 덴티스트리의 글로벌 리더로 성장하기까지.">
+<link rel="stylesheet" href="history.css">
 </head>
-
 <body>
 
-    <div class="nav-sticky-wrapper">
-        <nav class="timeline-nav">
-            <div class="nav-line"></div>
-            <div class="tab-container">
-                <button class="tab-item active" data-target="g-1997">
-                    <span class="tab-year">1997 ~ 2004</span>
-                    <span class="tab-dot"></span>
-                </button>
-                <button class="tab-item" data-target="g-2005">
-                    <span class="tab-year">2005 ~ 2009</span>
-                    <span class="tab-dot"></span>
-                </button>
-                <button class="tab-item" data-target="g-2020">
-                    <span class="tab-year">2020 ~ 현재</span>
-                    <span class="tab-dot"></span>
-                </button>
-            </div>
-        </nav>
+<section class="hero">
+  <div class="hero-badge"><span class="dot"></span>Since 2000</div>
+  <h1>25 Years of<br><span>Infinite Possibility</span></h1>
+  <p>3D 스캐닝 기술의 선구자에서 디지털 덴티스트리의 글로벌 리더로. 메디트가 걸어온 혁신의 여정.</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num">25+</div><div class="label">Years</div></div>
+    <div class="hero-stat"><div class="num">50+</div><div class="label">Products</div></div>
+    <div class="hero-stat"><div class="num">100K+</div><div class="label">Link Members</div></div>
+  </div>
+</section>
+
+<nav class="era-nav">
+  <div class="era-nav-inner">
+    <button class="era-nav-btn active" data-target="era-founding">2000 — 2004</button>
+    <button class="era-nav-btn" data-target="era-growth">2007 — 2011</button>
+    <button class="era-nav-btn" data-target="era-dental">2013 — 2017</button>
+    <button class="era-nav-btn" data-target="era-breakthrough">2018 — 2019</button>
+    <button class="era-nav-btn" data-target="era-global">2020 — 2022</button>
+    <button class="era-nav-btn" data-target="era-future">2023 — 2025</button>
+  </div>
+</nav>
+
+<main class="main">
+
+<!-- ERA 1 -->
+<section class="era-section visible" id="era-founding">
+  <div class="era-header">
+    <div class="era-year-range">2000 — 2004</div>
+    <div class="era-subtitle">Foundation & 3D Scanning Pioneer</div>
+  </div>
+  <div class="timeline">
+
+    <div class="year-group">
+      <div class="year-marker"><span class="year-label">2000</span></div>
+      <div class="events">
+        <div class="event-card highlight">
+          <div class="event-content">
+            <span class="event-month">04월</span>
+            <div class="event-title">주식회사 솔루션닉스(Solutionix) 설립</div>
+            <div class="event-desc">메디트의 전신, 3D 스캐닝 기술 전문기업으로 출발</div>
+            <div class="event-tags"><span class="tag milestone">창립</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+      </div>
     </div>
 
-    <main class="timeline-section">
+    <div class="year-group">
+      <div class="year-marker"><span class="year-label">2001</span></div>
+      <div class="events">
+        <div class="event-card">
+          <div class="event-content">
+            <span class="event-month">02월</span>
+            <div class="event-title">SNX Series / ezScan 출시</div>
+            <div class="event-desc">자체 개발 3D 스캐너 및 소프트웨어 최초 상용화</div>
+            <div class="event-tags"><span class="tag product">제품 출시</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+        <div class="event-card">
+          <div class="event-content">
+            <span class="event-month">04월</span>
+            <div class="event-title">Multi-Head System 개발</div>
+            <div class="event-desc">3D 스캐너 구동기술 소프트웨어(SNX/ezScan) 동시 출시</div>
+            <div class="event-tags"><span class="tag tech">기술 개발</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+        <div class="event-card">
+          <div class="event-content">
+            <span class="event-month">09월</span>
+            <div class="event-title">선도기술과제 공동연구기관 선정</div>
+            <div class="event-desc">정보통신부 지정, ezScan option pack 출시</div>
+            <div class="event-tags"><span class="tag milestone">정부 지정</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+      </div>
+    </div>
 
-        <section class="timeline-group" id="g-1997">
-            <div class="left-col">
-                <h2 class="group-title">1997 ~ 2004</h2>
-                <div class="main-visual-box">
-                    <span>[ 메인 비주얼 대표 이미지 영역 ]</span>
-                </div>
-            </div>
-            <div class="right-col">
-                <div class="event-list">
-                    <div class="event-card">
-                        <div class="event-thumb"><span>썸네일</span></div>
-                        <div class="event-details">
-                            <div class="event-year">1997</div>
-                            <p class="event-desc">'건강보험청구 소프트웨어(두번에)' 개발 및 출시</p>
-                        </div>
-                    </div>
-                    <div class="event-card">
-                        <div class="event-thumb"><span>썸네일</span></div>
-                        <div class="event-details">
-                            <div class="event-year">1999</div>
-                            <p class="event-desc">국제표준화기구 품질경영시스템 인증 (ISO9001)</p>
-                        </div>
-                    </div>
-                    <div class="event-card">
-                        <div class="event-thumb"><span>썸네일</span></div>
-                        <div class="event-details">
-                            <div class="event-year">2000</div>
-                            <p class="event-desc">'치과통합관리 소프트웨어(하나로)' 개발 및 출시</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <div class="year-group">
+      <div class="year-marker"><span class="year-label">2002</span></div>
+      <div class="events">
+        <div class="event-card">
+          <div class="event-content">
+            <span class="event-month">03월</span>
+            <div class="event-title">신기술인증서(KT) 획득</div>
+            <div class="event-desc">과학기술부장관 인증</div>
+            <div class="event-tags"><span class="tag award">인증</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+        <div class="event-card highlight">
+          <div class="event-content">
+            <span class="event-month">06월</span>
+            <div class="event-title">장영실상 수상</div>
+            <div class="event-desc">3D 스캐너 개발을 통한 산업혁신 기여 공로</div>
+            <div class="event-tags"><span class="tag award">수상</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+        <div class="event-card">
+          <div class="event-content">
+            <span class="event-month">11월</span>
+            <div class="event-title">벤처기업 인증</div>
+            <div class="event-tags"><span class="tag milestone">인증</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+      </div>
+    </div>
 
-        <section class="timeline-group" id="g-2005">
-            <div class="left-col">
-                <h2 class="group-title">2005 ~ 2009</h2>
-                <div class="main-visual-box">
-                    <span>[ 메인 비주얼 대표 이미지 영역 ]</span>
-                </div>
-            </div>
-            <div class="right-col">
-                <div class="event-list">
-                    <div class="event-card">
-                        <div class="event-thumb"><span>썸네일</span></div>
-                        <div class="event-details">
-                            <div class="event-year">2005</div>
-                            <p class="event-desc">대만(타이페이) 및 독일(에쉬본) 현지법인 설립</p>
-                        </div>
-                    </div>
-                    <div class="event-card">
-                        <div class="event-thumb"><span>썸네일</span></div>
-                        <div class="event-details">
-                            <div class="event-year">2006</div>
-                            <p class="event-desc">오스템임플란트(주) 사명 변경 및 해외법인 설립 완료</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <div class="year-group">
+      <div class="year-marker"><span class="year-label">2003</span></div>
+      <div class="events">
+        <div class="event-card">
+          <div class="event-content">
+            <span class="event-month">04월</span>
+            <div class="event-title">전문연구요원 업체 지정</div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+        <div class="event-card">
+          <div class="event-content">
+            <span class="event-month">07월</span>
+            <div class="event-title">우량기술기업 선정</div>
+            <div class="event-desc">기술신용보증기금 인정</div>
+            <div class="event-tags"><span class="tag award">선정</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+      </div>
+    </div>
 
-        <section class="timeline-group" id="g-2020">
-            <div class="left-col">
-                <h2 class="group-title">2020 ~ 현재</h2>
-                <div class="main-visual-box">
-                    <span>[ 메인 비주얼 대표 이미지 영역 ]</span>
-                </div>
-            </div>
-            <div class="right-col">
-                <div class="event-list">
-                    <div class="event-card">
-                        <div class="event-thumb"><span>썸네일</span></div>
-                        <div class="event-details">
-                            <div class="event-year">2020</div>
-                            <p class="event-desc">혁신형 의료기기기업 인증 및 마곡산업단지 본사 이전</p>
-                        </div>
-                    </div>
-                    <div class="event-card">
-                        <div class="event-thumb"><span>썸네일</span></div>
-                        <div class="event-details">
-                            <div class="event-year">2024</div>
-                            <p class="event-desc">'발명의 날' 산업부장관 표창 및 국내 최다 특허출원 달성</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
+    <div class="year-group">
+      <div class="year-marker"><span class="year-label">2004</span></div>
+      <div class="events">
+        <div class="event-card">
+          <div class="event-content">
+            <span class="event-month">03월</span>
+            <div class="event-title">China 현지법인 설립</div>
+            <div class="event-desc">글로벌 진출의 첫 발걸음</div>
+            <div class="event-tags"><span class="tag global">해외 진출</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+      </div>
+    </div>
 
-    </main>
+  </div>
+</section>
 
-    <script>
-        const tabs = document.querySelectorAll('.tab-item');
-        const groups = document.querySelectorAll('.timeline-group');
-        let isScrolling = false;
+<!-- ERA 2 -->
+<section class="era-section" id="era-growth">
+  <div class="era-header">
+    <div class="era-year-range">2007 — 2011</div>
+    <div class="era-subtitle">Technology Innovation & Recognition</div>
+  </div>
+  <div class="timeline">
 
-        // 탭 클릭 핸들러 (사용자 클릭 시 강제 이동 및 액티브 처리)
-        tabs.forEach(tab => {
-            tab.addEventListener('click', () => {
-                isScrolling = true; // 스크롤 이벤트와 충돌 방지 블로킹
-                const targetId = tab.getAttribute('data-target');
-                const targetSection = document.getElementById(targetId);
+    <div class="year-group">
+      <div class="year-marker"><span class="year-label">2007</span></div>
+      <div class="events">
+        <div class="event-card">
+          <div class="event-content">
+            <span class="event-month">11월</span>
+            <div class="event-title">기술혁신형 중소기업(INNO-BIZ) 선정</div>
+            <div class="event-tags"><span class="tag tech">기술 혁신</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+      </div>
+    </div>
 
-                tabs.forEach(t => t.classList.remove('active'));
-                tab.classList.add('active');
+    <div class="year-group">
+      <div class="year-marker"><span class="year-label">2009</span></div>
+      <div class="events">
+        <div class="event-card">
+          <div class="event-content">
+            <span class="event-month">04월</span>
+            <div class="event-title">중소기업 기술혁신개발사업 주관기관 선정</div>
+            <div class="event-tags"><span class="tag tech">기술 혁신</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+      </div>
+    </div>
 
-                if (targetSection) {
-                    targetSection.scrollIntoView({ behavior: 'smooth' });
+    <div class="year-group">
+      <div class="year-marker"><span class="year-label">2010</span></div>
+      <div class="events">
+        <div class="event-card">
+          <div class="event-content">
+            <span class="event-month">10월</span>
+            <div class="event-title">중소기업 제품개선 지원사업 선정</div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+      </div>
+    </div>
 
-                    // 스무스 스크롤 완료 시점에 블로킹 해제
-                    setTimeout(() => { isScrolling = false; }, 800);
-                }
-            });
-        });
+    <div class="year-group">
+      <div class="year-marker"><span class="year-label">2011</span></div>
+      <div class="events">
+        <div class="event-card highlight">
+          <div class="event-content">
+            <span class="event-month">12월</span>
+            <div class="event-title">세계일류상품 선정</div>
+            <div class="event-desc">지식경제부 인증, 글로벌 기술력 공인</div>
+            <div class="event-tags"><span class="tag award">세계일류</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+      </div>
+    </div>
 
-        // PC & 모바일 공용 스크롤 인터랙션 엔진 (Scroll Spy)
-        window.addEventListener('scroll', () => {
-            if (isScrolling) return;
+  </div>
+</section>
 
-            let currentActiveId = '';
-            const triggerOffset = 220; // 상단 헤더 영역 여백을 계산한 최적의 트리거 마진
+<!-- ERA 3 -->
+<section class="era-section" id="era-dental">
+  <div class="era-header">
+    <div class="era-year-range">2013 — 2017</div>
+    <div class="era-subtitle">Digital Dentistry Expansion</div>
+  </div>
+  <div class="timeline">
 
-            groups.forEach(group => {
-                const rect = group.getBoundingClientRect();
-                // 엘리먼트 상단이 뷰포트의 지정 범위 안으로 들어왔을 때 활성화 추적
-                if (rect.top - triggerOffset <= 0) {
-                    currentActiveId = group.getAttribute('id');
-                }
-            });
+    <div class="year-group">
+      <div class="year-marker"><span class="year-label">2013</span></div>
+      <div class="events">
+        <div class="event-card">
+          <div class="event-content">
+            <span class="event-month">07월</span>
+            <div class="event-title">Identica Blue 출시</div>
+            <div class="event-desc">치과 기공소용 3D 스캐너 본격 진출</div>
+            <div class="event-tags"><span class="tag product">제품 출시</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+      </div>
+    </div>
 
-            // 매칭되는 탭 컴포넌트에 실시간 active 클래스 분배
-            if (currentActiveId) {
-                tabs.forEach(tab => {
-                    if (tab.getAttribute('data-target') === currentActiveId) {
-                        tab.classList.add('active');
-                    } else {
-                        tab.classList.remove('active');
-                    }
-                });
-            }
-        });
-    </script>
+    <div class="year-group">
+      <div class="year-marker"><span class="year-label">2014</span></div>
+      <div class="events">
+        <div class="event-card">
+          <div class="event-content">
+            <span class="event-month">06월</span>
+            <div class="event-title">Collab 소프트웨어 출시</div>
+            <div class="event-tags"><span class="tag product">소프트웨어</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+        <div class="event-card highlight">
+          <div class="event-content">
+            <span class="event-month">11월</span>
+            <div class="event-title">수출의 탑 수상 (5백만불)</div>
+            <div class="event-tags"><span class="tag award">수상</span><span class="tag global">수출</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="year-group">
+      <div class="year-marker"><span class="year-label">2015</span></div>
+      <div class="events">
+        <div class="event-card">
+          <div class="event-content">
+            <span class="event-month">01월</span>
+            <div class="event-title">Identica Blue Light 출시</div>
+            <div class="event-tags"><span class="tag product">제품 출시</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+        <div class="event-card highlight">
+          <div class="event-content">
+            <span class="event-month">06월</span>
+            <div class="event-title">장영실상 수상 (2회)</div>
+            <div class="event-desc">3D 스캐너 기술 혁신 공로</div>
+            <div class="event-tags"><span class="tag award">수상</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+        <div class="event-card">
+          <div class="event-content">
+            <span class="event-month">10월</span>
+            <div class="event-title">Identica Hybrid 출시</div>
+            <div class="event-tags"><span class="tag product">제품 출시</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="year-group">
+      <div class="year-marker"><span class="year-label">2017</span></div>
+      <div class="events">
+        <div class="event-card">
+          <div class="event-content">
+            <span class="event-month">03월</span>
+            <div class="event-title">Identica T Series 출시</div>
+            <div class="event-desc">치과 기공소용 차세대 스캐너</div>
+            <div class="event-tags"><span class="tag product">제품 출시</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+        <div class="event-card">
+          <div class="event-content">
+            <span class="event-month">05월</span>
+            <div class="event-title">Solutionix C, D Series 출시</div>
+            <div class="event-desc">산업용 3D 스캐너 라인업 확장</div>
+            <div class="event-tags"><span class="tag product">제품 출시</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+        <div class="event-card highlight">
+          <div class="event-content">
+            <span class="event-month">12월</span>
+            <div class="event-title">수출의 탑 수상 (천만불)</div>
+            <div class="event-desc">5백만불 → 천만불, 2배 성장</div>
+            <div class="event-tags"><span class="tag award">수상</span><span class="tag global">수출 성장</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ERA 4 -->
+<section class="era-section" id="era-breakthrough">
+  <div class="era-header">
+    <div class="era-year-range">2018 — 2019</div>
+    <div class="era-subtitle">Game Changer — i500 & Medit Link</div>
+  </div>
+  <div class="timeline">
+
+    <div class="year-group">
+      <div class="year-marker"><span class="year-label">2018</span></div>
+      <div class="events">
+        <div class="event-card">
+          <div class="event-content">
+            <span class="event-month">01월</span>
+            <div class="event-title">Singapore 현지법인 설립</div>
+            <div class="event-desc">아시아 시장 공략 거점 마련</div>
+            <div class="event-tags"><span class="tag global">해외 진출</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+        <div class="event-card highlight">
+          <div class="event-content">
+            <span class="event-month">06월</span>
+            <div class="event-title">Medit i500 / Medit Link 런칭 🚀</div>
+            <div class="event-desc">메디트 최초 구강스캐너 i500과 오픈 플랫폼 Medit Link 동시 출시. 디지털 덴티스트리 시장의 게임 체인저.</div>
+            <div class="event-tags"><span class="tag product">구강스캐너</span><span class="tag milestone">터닝포인트</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+        <div class="event-card">
+          <div class="event-content">
+            <span class="event-month">11월</span>
+            <div class="event-title">Medit T500 세계일류상품 선정</div>
+            <div class="event-desc">산업통상자원부 인증</div>
+            <div class="event-tags"><span class="tag award">세계일류</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="year-group">
+      <div class="year-marker"><span class="year-label">2019</span></div>
+      <div class="events">
+        <div class="event-card highlight">
+          <div class="event-content">
+            <span class="event-month">04월</span>
+            <div class="event-title">Medit i500 Red Dot Design Award 수상</div>
+            <div class="event-tags"><span class="tag award">Red Dot</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+        <div class="event-card">
+          <div class="event-content">
+            <span class="event-month">07월</span>
+            <div class="event-title">최우수 벤처기업 선정</div>
+            <div class="event-desc">벤처기업협회 인정</div>
+            <div class="event-tags"><span class="tag award">선정</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+        <div class="event-card">
+          <div class="event-content">
+            <span class="event-month">07월</span>
+            <div class="event-title">대한민국 일자리 으뜸기업 선정</div>
+            <div class="event-desc">고용노동부 인증</div>
+            <div class="event-tags"><span class="tag milestone">고용 우수</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+        <div class="event-card">
+          <div class="event-content">
+            <span class="event-month">12월</span>
+            <div class="event-title">Medit i500 한국기술대상 수상</div>
+            <div class="event-tags"><span class="tag award">수상</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+        <div class="event-card highlight">
+          <div class="event-content">
+            <span class="event-month">12월</span>
+            <div class="event-title">수출의 탑 수상 (3천만불) 🏆</div>
+            <div class="event-desc">천만불 → 3천만불, 3배 도약</div>
+            <div class="event-tags"><span class="tag award">수상</span><span class="tag global">수출 폭발</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ERA 5 -->
+<section class="era-section" id="era-global">
+  <div class="era-header">
+    <div class="era-year-range">2020 — 2022</div>
+    <div class="era-subtitle">Global Leadership & Wireless Era</div>
+  </div>
+  <div class="timeline">
+
+    <div class="year-group">
+      <div class="year-marker"><span class="year-label">2020</span></div>
+      <div class="events">
+        <div class="event-card">
+          <div class="event-content">
+            <span class="event-month">09월</span>
+            <div class="event-title">새롭게 디자인된 기공소용 테이블탑 스캐너 출시</div>
+            <div class="event-tags"><span class="tag product">제품 출시</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+        <div class="event-card">
+          <div class="event-content">
+            <span class="event-month">11월</span>
+            <div class="event-title">MEDIT Apps 런칭</div>
+            <div class="event-desc">메디트 치과용 애플리케이션 생태계 구축</div>
+            <div class="event-tags"><span class="tag product">소프트웨어</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+        <div class="event-card">
+          <div class="event-content">
+            <span class="event-month">11월</span>
+            <div class="event-title">iDD Awards 2020 수상</div>
+            <div class="event-tags"><span class="tag award">수상</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="year-group">
+      <div class="year-marker"><span class="year-label">2021</span></div>
+      <div class="events">
+        <div class="event-card highlight">
+          <div class="event-content">
+            <span class="event-month">01월</span>
+            <div class="event-title">MEDIT 전사적 리브랜딩 ✦</div>
+            <div class="event-desc">로고, 슬로건 전면 개편. 새로운 브랜드 아이덴티 확립</div>
+            <div class="event-tags"><span class="tag milestone">리브랜딩</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+        <div class="event-card">
+          <div class="event-content">
+            <span class="event-month">03월</span>
+            <div class="event-title">T시리즈 iF Design Award 수상</div>
+            <div class="event-tags"><span class="tag award">iF Award</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+        <div class="event-card highlight">
+          <div class="event-content">
+            <span class="event-month">04월</span>
+            <div class="event-title">i700 Red Dot Design Award 수상</div>
+            <div class="event-tags"><span class="tag award">Red Dot</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+        <div class="event-card">
+          <div class="event-content">
+            <span class="event-month">10월</span>
+            <div class="event-title">i700 Cellerant Best of Class 수상</div>
+            <div class="event-tags"><span class="tag award">Best of Class</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="year-group">
+      <div class="year-marker"><span class="year-label">2022</span></div>
+      <div class="events">
+        <div class="event-card highlight">
+          <div class="event-content">
+            <span class="event-month">04월</span>
+            <div class="event-title">i600 & i700 Wireless 모델 출시</div>
+            <div class="event-desc">무선 시대 개막, 임상 자유도 극대화</div>
+            <div class="event-tags"><span class="tag product">무선 스캐너</span><span class="tag milestone">무선 시대</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+        <div class="event-card">
+          <div class="event-content">
+            <span class="event-month">05월</span>
+            <div class="event-title">Medit Link macOS 버전 출시</div>
+            <div class="event-tags"><span class="tag product">소프트웨어</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+        <div class="event-card">
+          <div class="event-content">
+            <span class="event-month">12월</span>
+            <div class="event-title">iDD Awards 2022 수상</div>
+            <div class="event-tags"><span class="tag award">수상</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ERA 6 -->
+<section class="era-section" id="era-future">
+  <div class="era-header">
+    <div class="era-year-range">2023 — 2025</div>
+    <div class="era-subtitle">Premium & Infinite Possibility</div>
+  </div>
+  <div class="timeline">
+
+    <div class="year-group">
+      <div class="year-marker"><span class="year-label">2023</span></div>
+      <div class="events">
+        <div class="event-card highlight">
+          <div class="event-content">
+            <span class="event-month">09월</span>
+            <div class="event-title">Medit Link 10만 회원 달성 🎉</div>
+            <div class="event-desc">전 세계 디지털 덴티스트리 플랫폼 최대 규모</div>
+            <div class="event-tags"><span class="tag milestone">10만 회원</span><span class="tag global">글로벌</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="year-group">
+      <div class="year-marker"><span class="year-label">2024</span></div>
+      <div class="events">
+        <div class="event-card highlight">
+          <div class="event-content">
+            <span class="event-month">04월</span>
+            <div class="event-title">프리미엄 모델 i900 출시 ✦</div>
+            <div class="event-desc">메디트 플래그십 구강스캐너. 역대 최고 성능과 디자인</div>
+            <div class="event-tags"><span class="tag product">플래그십</span><span class="tag milestone">i900</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="year-group">
+      <div class="year-marker"><span class="year-label">2025</span></div>
+      <div class="events">
+        <div class="event-card">
+          <div class="event-content">
+            <span class="event-month">03월</span>
+            <div class="event-title">i900 iF Design Award 수상</div>
+            <div class="event-tags"><span class="tag award">iF Award</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+        <div class="event-card">
+          <div class="event-content">
+            <span class="event-month">03월</span>
+            <div class="event-title">i900 Classic 모델 출시</div>
+            <div class="event-tags"><span class="tag product">제품 출시</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+        <div class="event-card highlight">
+          <div class="event-content">
+            <span class="event-month">04월</span>
+            <div class="event-title">슬로건 개편 — "Infinite Possibility"</div>
+            <div class="event-desc">무한한 가능성을 향한 새로운 비전 선포</div>
+            <div class="event-tags"><span class="tag milestone">비전</span></div>
+          </div>
+          <div class="event-thumb"><span>썸네일 영역</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <p>© 2025 Medit Corp. All rights reserved. — Infinite Possibility</p>
+</footer>
+
+<script>
+// Intersection Observer for scroll animations
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.era-section').forEach(s => observer.observe(s));
+
+// Era navigation
+const navBtns = document.querySelectorAll('.era-nav-btn');
+navBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    navBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById(btn.dataset.target)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+// Active nav on scroll
+const sections = document.querySelectorAll('.era-section');
+const navObserver = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      navBtns.forEach(b => b.classList.remove('active'));
+      document.querySelector(`[data-target="${e.target.id}"]`)?.classList.add('active');
+    }
+  });
+}, { threshold: 0.3 });
+sections.forEach(s => navObserver.observe(s));
+</script>
+
 </body>
-
 </html>
